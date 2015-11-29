@@ -1,0 +1,38 @@
+[root]
+name = "matching-pennies"
+version = "0.1.0"
+dependencies = [
+ "zmq 0.7.0 (git+https://github.com/erickt/rust-zmq.git)",
+]
+
+[[package]]
+name = "libc"
+version = "0.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "log"
+version = "0.3.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "libc 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "zmq"
+version = "0.7.0"
+source = "git+https://github.com/erickt/rust-zmq.git#87a6bd2a7ce09200b6f0a5bdc08ef684c4951f21"
+dependencies = [
+ "libc 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "log 0.3.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "zmq-sys 0.7.0 (git+https://github.com/erickt/rust-zmq.git)",
+]
+
+[[package]]
+name = "zmq-sys"
+version = "0.7.0"
+source = "git+https://github.com/erickt/rust-zmq.git#87a6bd2a7ce09200b6f0a5bdc08ef684c4951f21"
+dependencies = [
+ "libc 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+

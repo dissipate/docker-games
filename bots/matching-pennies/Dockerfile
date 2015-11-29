@@ -21,4 +21,6 @@ RUN curl -s https://static.rust-lang.org/rustup.sh > /tmp/rustup.sh
 RUN chmod +x /tmp/rustup.sh
 RUN cd /tmp && ./rustup.sh --yes
 
-ADD . /usr/local/mps 
+ADD . /usr/local/mpb
+
+EXPOSE 5555 

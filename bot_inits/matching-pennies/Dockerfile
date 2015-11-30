@@ -23,4 +23,6 @@ RUN cd /tmp && ./rustup.sh --yes
 
 ADD . /usr/local/mpb
 
+CMD cd /usr/local/mpb && cargo run
+
 EXPOSE 5555 

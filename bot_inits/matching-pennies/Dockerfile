@@ -23,6 +23,11 @@ RUN cd /tmp && ./rustup.sh --yes
 
 ADD . /usr/local/mpb
 
-CMD cd /usr/local/mpb && cargo run
+RUN cd /usr/local/mpb && cargo build
+
+RUN cp /usr/local/mpb/target/debug/matching-pennies-bot /usr/bin
+RUN chmod +x /usr/bin/matching-pennies-bot
+
+CMD matching-pennies-bot 
 
 EXPOSE 5555 

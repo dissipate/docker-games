@@ -23,4 +23,7 @@ RUN cd /tmp && ./rustup.sh --yes
 
 ADD . /usr/local/mps
 
-CMD cd /usr/local/mps && cargo run 
+RUN cd /usr/local/mps && cargo build
+RUN cp /usr/local/mps/target/debug/matching-pennies /usr/bin
+
+CMD matching-pennies

@@ -26,4 +26,6 @@ ADD . /usr/local/mps
 RUN cd /usr/local/mps && cargo build
 RUN cp /usr/local/mps/target/debug/matching-pennies /usr/bin
 
+RUN cp /usr/local/mps/target/debug/mps-benchmark /usr/bin
+
 CMD matching-pennies

@@ -13,15 +13,14 @@ fn main() {
 
     let mut msg_req = zmq::Message::new().unwrap();
 
+    println!("Starting...");
+
     for _ in 0..1_000_000 {
 
-        //println!("Sending Hello");
         requester.send(b"Hello", 0).unwrap();
 
         requester.recv(&mut msg_req, 0).unwrap();
-        //println!("Received {}", msg_req.as_str().unwrap());
 
-        //thread::sleep_ms(1000);
     }
 
 }

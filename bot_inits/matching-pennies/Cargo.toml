@@ -5,3 +5,7 @@ authors = ["root"]
 
 [dependencies.zmq]
 git = "https://github.com/erickt/rust-zmq.git"
+
+[[bin]]
+name = "mpb-benchmark"
+path = "src/benchmark"

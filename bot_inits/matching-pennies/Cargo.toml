@@ -8,4 +8,4 @@ git = "https://github.com/erickt/rust-zmq.git"
 
 [[bin]]
 name = "mpb-benchmark"
-path = "src/benchmark"
+path = "src/benchmark.rs"

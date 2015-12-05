@@ -1,5 +1,5 @@
 [root]
-name = "matching-pennies"
+name = "matching-pennies-server"
 version = "0.1.0"
 dependencies = [
  "zmq 0.7.0 (git+https://github.com/erickt/rust-zmq.git)",

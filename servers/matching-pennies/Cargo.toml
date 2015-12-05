@@ -5,3 +5,7 @@ authors = ["root"]
 
 [dependencies.zmq]
 git = "https://github.com/erickt/rust-zmq.git"
+
+[[bin]]
+name = "mps-benchmark"
+path = "src/benchmark.rs"

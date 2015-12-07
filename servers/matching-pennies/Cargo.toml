@@ -13,3 +13,13 @@ path = "src/benchmark.rs"
 [[bin]]
 name = "matching-pennies"
 path = "src/main.rs"
+
+[[bin]]
+name = "msg-pack"
+path = "src/message_pack.rs"
+
+[dependencies.msgpack]
+git = "https://github.com/mneumann/rust-msgpack.git"
+
+[dependencies]
+rustc-serialize = "*"

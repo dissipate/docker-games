@@ -9,3 +9,7 @@ git = "https://github.com/erickt/rust-zmq.git"
 [[bin]]
 name = "mpb-benchmark"
 path = "src/benchmark.rs"
+
+[[bin]]
+name = "matching-pennies-bot"
+path = "src/main.rs"

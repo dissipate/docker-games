@@ -19,7 +19,7 @@ RUN rm /tmp/* -rf
 
 RUN curl -s https://static.rust-lang.org/rustup.sh > /tmp/rustup.sh
 RUN chmod +x /tmp/rustup.sh
-RUN cd /tmp && ./rustup.sh --yes
+RUN cd /tmp && ./rustup.sh --yes --channel=nightly
 
 ADD . /usr/local/mps
 

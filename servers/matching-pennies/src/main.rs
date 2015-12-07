@@ -8,6 +8,9 @@ fn main() {
     let mut mpb1 = context.socket(zmq::REQ).unwrap();
     let mut mpb2 = context.socket(zmq::REQ).unwrap();
 
+    let zero = vec![0];
+    let one = vec![1];
+
     mpb1.set_rcvhwm(1).unwrap();
     mpb2.set_rcvhwm(1).unwrap();
 
@@ -20,14 +23,19 @@ fn main() {
 
     loop {
 
-        println!("Sending Hello1");
-        mpb1.send(b"Hello", 0).unwrap();
+        println!("Sending 0");
+
+        mpb1.send(&zero, 0).unwrap();
+
+        //println!("Sending Hello1");
+        //mpb1.send(b"Hello", 0).unwrap();
 
         mpb1.recv(&mut msg_req1, 0).unwrap();
         println!("Received {}", msg_req1.as_str().unwrap());
 
-        println!("Sending Hello2");
-        mpb2.send(b"Hello", 0).unwrap();
+        println!("Sending 1");
+        //println!("Sending Hello2");
+        mpb2.send(&one, 0).unwrap();
 
         mpb2.recv(&mut msg_req2, 0).unwrap();
         println!("Received {}", msg_req2.as_str().unwrap());

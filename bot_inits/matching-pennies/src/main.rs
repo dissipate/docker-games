@@ -8,7 +8,7 @@ fn main() {
 
     assert!(responder.bind("tcp://*:5555").is_ok());
 
-    let mut msg = zmq::Message::new().unwrap();
+    //let mut msg: Vec<u8> = Vec::new();
 
     responder.set_rcvhwm(1).unwrap();
 
@@ -16,9 +16,9 @@ fn main() {
 
         println!("Receiving...");
 
-        responder.recv(&mut msg, 0).unwrap();
+        let byte_msg = responder.recv_bytes(0).unwrap();
 
-        println!("Received {}", msg.as_str().unwrap());
+        println!("Received {}", byte_msg.get(0).unwrap());
         
         responder.send_str("World", 0).unwrap();
         

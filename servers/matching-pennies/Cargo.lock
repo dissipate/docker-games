@@ -2,13 +2,14 @@
 name = "matching-pennies-server"
 version = "0.1.0"
 dependencies = [
- "msgpack 0.1.0 (git+https://github.com/mneumann/rust-msgpack.git)",
+ "rmp-serialize 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rustc-serialize 0.3.16 (registry+https://github.com/rust-lang/crates.io-index)",
  "zmq 0.7.0 (git+https://github.com/erickt/rust-zmq.git)",
 ]
 
 [[package]]
 name = "byteorder"
-version = "0.4.2"
+version = "0.3.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
@@ -25,11 +26,19 @@ dependencies = [
 ]
 
 [[package]]
-name = "msgpack"
-version = "0.1.0"
-source = "git+https://github.com/mneumann/rust-msgpack.git#710b104931852ac2ae5a21eee0d6133c956d2668"
+name = "rmp"
+version = "0.7.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "byteorder 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "byteorder 0.3.13 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "rmp-serialize"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "rmp 0.7.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "rustc-serialize 0.3.16 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 

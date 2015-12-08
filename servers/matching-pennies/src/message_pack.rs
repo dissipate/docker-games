@@ -1,20 +1,27 @@
-extern crate msgpack;
-
+extern crate rmp_serialize as msgpack;
 extern crate rustc_serialize;
 
-#[derive(RustcEncodable, RustcDecodable)]
-struct MyStruct {
-  p: u8,
-  c: String
+use rustc_serialize::{Encodable, Decodable};
+use msgpack::{Encoder, Decoder};
+
+#[derive(RustcEncodable, RustcDecodable, PartialEq, Debug)]
+struct Custom {
+    id: u32,
+    key: String,
 }
 
 fn main() {
+    let val = Custom { id: 42u32, key: "the Answer".to_string() };
 
-  let some_struct: MyStruct = MyStruct {p: 1, c: "blah".to_string()};
+    let mut buf = [0u8; 13];
 
-  let str = msgpack::Encoder::to_msgpack(&some_struct).ok().unwrap();
-  println!("Encoded: {:?}", str);
+    val.encode(&mut Encoder::new(&mut &mut buf[..]));
 
-  let dec: Vec<String> = msgpack::from_msgpack(&str).ok().unwrap();
-  println!("Decoded: {:?}", dec);
+    assert_eq!([0x92, 0x2a, 0xaa, 0x74, 0x68, 0x65, 0x20, 0x41, 0x6e, 0x73, 0x77, 0x65, 0x72], buf);
+
+    // Now try to unpack the buffer into the initial struct.
+    let mut decoder = Decoder::new(&buf[..]);
+    let res: Custom = Decodable::decode(&mut decoder).ok().unwrap();
+
+    assert_eq!(val, res);
 }

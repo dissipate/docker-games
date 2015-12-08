@@ -18,8 +18,8 @@ path = "src/main.rs"
 name = "msg-pack"
 path = "src/message_pack.rs"
 
-[dependencies.msgpack]
-git = "https://github.com/mneumann/rust-msgpack.git"
+[dependencies.rmp-serialize]
+rmp-serialize = "0.7.0"
 
 [dependencies]
 rustc-serialize = "*"

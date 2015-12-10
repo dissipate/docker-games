@@ -1,15 +1,39 @@
 extern crate zmq;
-use std::thread;
+use std::thread::sleep;
+use std::time::Duration;
+
+extern crate rmp_serialize as msgpack;
+extern crate rustc_serialize;
+
+use rustc_serialize::{Encodable, Decodable};
+use msgpack::{Encoder, Decoder};
+
+//fn main() {
+//    let val = Custom { id: 42u32, key: "the Answer".to_string() };
+
+//    let mut buf = [0u8; 13];
+
+//    val.encode(&mut Encoder::new(&mut &mut buf[..]));
+
+//    assert_eq!([0x92, 0x2a, 0xaa, 0x74, 0x68, 0x65, 0x20, 0x41, 0x6e, 0x73, 0x77, 0x65, 0x72], buf);
+
+    // Now try to unpack the buffer into the initial struct.
+//    let mut decoder = Decoder::new(&buf[..]);
+//    let res: Custom = Decodable::decode(&mut decoder).ok().unwrap();
+
+//    assert_eq!(val, res);
+//}
+
 
 fn main() {
-
+    #[derive(RustcEncodable, RustcDecodable, PartialEq, Debug)]
+    struct Pick{
+        p: String
+    }    
 
     let mut context = zmq::Context::new();
     let mut mpb1 = context.socket(zmq::REQ).unwrap();
     let mut mpb2 = context.socket(zmq::REQ).unwrap();
-
-    let zero = vec![0];
-    let one = vec![1];
 
     mpb1.set_rcvhwm(1).unwrap();
     mpb2.set_rcvhwm(1).unwrap();
@@ -21,27 +45,29 @@ fn main() {
     let mut msg_req1 = zmq::Message::new().unwrap();
     let mut msg_req2 = zmq::Message::new().unwrap();
 
+    let init_pick = Pick { p: "^".to_string() };
+
+    let mut pick_buf = Vec::with_capacity(20);
+
+    init_pick.encode(&mut Encoder::new(&mut &mut pick_buf)).unwrap();
+
     loop {
 
-        println!("Sending 0");
+        println!("Sending ^");
 
-        mpb1.send(&zero, 0).unwrap();
-
-        //println!("Sending Hello1");
-        //mpb1.send(b"Hello", 0).unwrap();
+        mpb1.send(&pick_buf, 0).unwrap();
 
         mpb1.recv(&mut msg_req1, 0).unwrap();
         println!("Received {}", msg_req1.as_str().unwrap());
 
-        println!("Sending 1");
-        //println!("Sending Hello2");
-        mpb2.send(&one, 0).unwrap();
+        println!("Sending ^");
+        mpb2.send(&pick_buf, 0).unwrap();
 
         mpb2.recv(&mut msg_req2, 0).unwrap();
         println!("Received {}", msg_req2.as_str().unwrap());
 
 
-        thread::sleep_ms(1000);
+        std::thread::sleep(Duration::new(1,0));
     }
 
 }

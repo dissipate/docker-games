@@ -8,27 +8,11 @@ extern crate rustc_serialize;
 use rustc_serialize::{Encodable, Decodable};
 use msgpack::{Encoder, Decoder};
 
-//fn main() {
-//    let val = Custom { id: 42u32, key: "the Answer".to_string() };
-
-//    let mut buf = [0u8; 13];
-
-//    val.encode(&mut Encoder::new(&mut &mut buf[..]));
-
-//    assert_eq!([0x92, 0x2a, 0xaa, 0x74, 0x68, 0x65, 0x20, 0x41, 0x6e, 0x73, 0x77, 0x65, 0x72], buf);
-
-    // Now try to unpack the buffer into the initial struct.
-//    let mut decoder = Decoder::new(&buf[..]);
-//    let res: Custom = Decodable::decode(&mut decoder).ok().unwrap();
-
-//    assert_eq!(val, res);
-//}
-
 
 fn main() {
     #[derive(RustcEncodable, RustcDecodable, PartialEq, Debug)]
     struct Pick{
-        p: String
+        p: char 
     }    
 
     let mut context = zmq::Context::new();
@@ -45,7 +29,7 @@ fn main() {
     let mut msg_req1 = zmq::Message::new().unwrap();
     let mut msg_req2 = zmq::Message::new().unwrap();
 
-    let init_pick = Pick { p: "^".to_string() };
+    let init_pick = Pick { p: '^' };
 
     let mut pick_buf = Vec::with_capacity(20);
 

@@ -11,7 +11,7 @@ fn main() {
 
     #[derive(RustcEncodable, RustcDecodable, PartialEq, Debug)]
     struct Pick{
-        p: String
+        p: char 
     }
 
     let mut ctx = zmq::Context::new();
@@ -34,8 +34,19 @@ fn main() {
 
         let mut decoder = Decoder::new(&byte_msg[..]);
         let res: Pick = Decodable::decode(&mut decoder).ok().unwrap();
-        
+       
+        let their_pick = res.p;
+
+        let their_pick_val: u8 = match their_pick {
+          '0' => 0,
+          '1' => 1,
+          '^' => 2,
+          _ => 3 
+        };
+ 
         println!("Received msgpack {:?}", res);
+
+        println!("Their pick: {:?}", their_pick_val);
 
         responder.send_str("World", 0).unwrap();
         

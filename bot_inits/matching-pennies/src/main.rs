@@ -24,6 +24,11 @@ fn main() {
 
     responder.set_rcvhwm(1).unwrap();
 
+    let pick = Pick { p: '0' };
+
+    let mut pick_buf = Vec::with_capacity(20);
+    pick.encode(&mut Encoder::new(&mut &mut pick_buf)).unwrap();
+
     loop {
 
         println!("Receiving...");
@@ -48,7 +53,7 @@ fn main() {
 
         println!("Their pick: {:?}", their_pick_val);
 
-        responder.send_str("World", 0).unwrap();
+        responder.send(&pick_buf, 0).unwrap();
         
         thread::sleep_ms(1000);
 

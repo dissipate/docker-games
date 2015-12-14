@@ -13,6 +13,12 @@ struct Pick{
     p: char
 }
 
+#[derive(Debug)]
+enum MatchingPenniesBot{
+    MPB1,
+    MPB2
+}
+
 fn parse_pick(pick: &[u8]) -> Option<u8>{
 
     let mut decoder = Decoder::new(&pick[..]);
@@ -27,6 +33,26 @@ fn parse_pick(pick: &[u8]) -> Option<u8>{
     
 }
 
+fn flip_pick(pick: &Pick) -> Option<Pick>{
+
+    match pick {
+        &Pick { p: '1' } => Some( Pick { p: '0'} ),
+        &Pick { p: '0' } => Some( Pick { p: '1'} ),
+        _ => None
+    }
+
+}
+
+fn round_win_select(picks: (&Pick, &Pick)) -> Option<MatchingPenniesBot>{
+    
+    match picks {
+        (&Pick{ p: '0'}, &Pick{ p: '0'}) => Some(MatchingPenniesBot::MPB1),
+        (&Pick{ p: '1'}, &Pick{ p: '1'}) => Some(MatchingPenniesBot::MPB1),
+        (&Pick{ p: '0'}, &Pick{ p: '1'}) => Some(MatchingPenniesBot::MPB2),
+        (&Pick{ p: '1'}, &Pick{ p: '0'}) => Some(MatchingPenniesBot::MPB2),
+        _ => None
+    }
+}
 
 fn main() {
 
@@ -45,6 +71,9 @@ fn main() {
 
     let mut mpb1_pick_buf = Vec::with_capacity(20);
     let mut mpb2_pick_buf = Vec::with_capacity(20);
+
+    let mut mpb1_wins = 0;
+    let mut mpb2_wins = 0;
 
     mpb1_pick.encode(&mut Encoder::new(&mut &mut mpb1_pick_buf)).unwrap();
     mpb2_pick.encode(&mut Encoder::new(&mut &mut mpb2_pick_buf)).unwrap();
@@ -72,11 +101,25 @@ fn main() {
         mpb1_pick = Decodable::decode(&mut decoder1).ok().unwrap();
         mpb2_pick = Decodable::decode(&mut decoder2).ok().unwrap();
 
+        let winner = round_win_select((&mpb1_pick, &mpb2_pick)).unwrap();
+
+        match winner {
+            MatchingPenniesBot::MPB1 => mpb1_wins += 1,
+            MatchingPenniesBot::MPB2 => mpb2_wins += 1
+            
+        }
+
+        println!("WINNER {:?}, RUNNING SCORES: {:?}, {:?}", winner, mpb1_wins, mpb2_wins);      
+
+        println!("WINNER {:?}", winner); 
+
         println!("Received {:?}", mpb1_pick);
         println!("Received {:?}", mpb2_pick);
 
         mpb1_pick_buf.clear();
         mpb2_pick_buf.clear();
+
+        mpb1_pick = flip_pick(&mpb1_pick).unwrap();
 
         mpb1_pick.encode(&mut Encoder::new(&mut &mut mpb1_pick_buf)).unwrap();
         mpb2_pick.encode(&mut Encoder::new(&mut &mut mpb2_pick_buf)).unwrap();

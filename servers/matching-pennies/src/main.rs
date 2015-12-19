@@ -16,7 +16,8 @@ struct Pick{
 #[derive(Debug)]
 enum MatchingPenniesBot{
     MPB1,
-    MPB2
+    MPB2,
+    Neither
 }
 
 fn parse_pick(pick: &[u8]) -> Option<u8>{
@@ -54,7 +55,7 @@ fn round_win_select(picks: (&Pick, &Pick)) -> Option<MatchingPenniesBot>{
     }
 }
 
-fn check_for_winner(mpb1_wins: u8, mpb2_wins: u8, number_of_rounds: u8) -> (Option<MatchingPenniesBot>, f64){
+fn check_for_winner(mpb1_wins: u64, mpb2_wins: u64, number_of_rounds: u64) -> (Option<MatchingPenniesBot>, f64){
 
     let expected_mpb1_wins = (number_of_rounds / 2) as f64;
     let expected_mpb2_wins = (number_of_rounds / 2) as f64;
@@ -76,7 +77,11 @@ fn check_for_winner(mpb1_wins: u8, mpb2_wins: u8, number_of_rounds: u8) -> (Opti
     return (winner, win_factor);
 }
 
-    
+fn announce_winner_exit(mpb: MatchingPenniesBot) -> (){
+
+    println!("Winner is {:?}!", mpb);
+    std::process::exit(0);
+}
 
 fn main() {
 
@@ -130,17 +135,31 @@ fn main() {
 
         match winner {
             MatchingPenniesBot::MPB1 => mpb1_wins += 1,
-            MatchingPenniesBot::MPB2 => mpb2_wins += 1
-            
+            MatchingPenniesBot::MPB2 => mpb2_wins += 1,
+            _ => ()    
         }
  
         total_rounds += 1;
 
-        let game_winner = check_for_winner(mpb1_wins, mpb2_wins, total_rounds); 
+        let (game_winner_opt, factor) = check_for_winner(mpb1_wins, mpb2_wins, total_rounds);
 
-        println!("WINNER {:?}, RUNNING SCORES: {:?}, {:?}, {:?}", winner, mpb1_wins, mpb2_wins, game_winner);      
+        let game_winner:MatchingPenniesBot;
 
-        println!("WINNER {:?}", winner); 
+        match game_winner_opt {
+        Some(MatchingPenniesBot::MPB1) => game_winner = MatchingPenniesBot::MPB1,
+        Some(MatchingPenniesBot::MPB2) => game_winner = MatchingPenniesBot::MPB2,
+        _ => game_winner = MatchingPenniesBot::Neither 
+        }  
+ 
+        println!("WINNER {:?}, RUNNING SCORES: {:?}, {:?}, {:?}, {:?}", winner, mpb1_wins, mpb2_wins, game_winner, factor);      
+
+        println!("WINNER {:?}", winner);
+
+        match game_winner {
+            MatchingPenniesBot::MPB1 | MatchingPenniesBot::MPB2 => announce_winner_exit(game_winner),
+            _ => () 
+           
+        }
 
         println!("Received {:?}", mpb1_pick);
         println!("Received {:?}", mpb2_pick);

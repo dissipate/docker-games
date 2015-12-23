@@ -22,11 +22,60 @@ struct RoundStatus{
     //Score
     s: u64,
     //Status
-    t: char
+    t: char 
+}
+
+#[derive(RustcEncodable, RustcDecodable, PartialEq, Debug)]
+struct RoundStatusInternal{
+    //Round
+    round: u64,
+    //Pick
+    pick: PickVal,
+    //Score
+    score: u64,
+    //Status
+    status: Status  
 }
 
 #[derive(Debug, PartialEq)]
 enum MatchingPenniesBot{
+    MPB1,
+    MPB2,
+    Neither
+}
+
+#[derive(RustcEncodable, RustcDecodable, PartialEq, Debug)]
+enum Status{
+    WinScore,
+    LossScore,
+    WinTime,
+    LossTime,
+    WinForfeit,
+    LossForfeit,
+    Lead,
+    Trail,
+    Neutral
+} 
+
+#[derive(RustcEncodable, RustcDecodable, PartialEq, Debug)]
+enum PickVal{
+    ZERO,
+    ONE
+}
+
+#[derive(RustcEncodable, RustcDecodable, PartialEq, Debug)]
+struct PickInternal{
+    pick: PickVal
+}
+
+#[derive(RustcEncodable, RustcDecodable, PartialEq, Debug)]
+enum RoundWinner{
+    MPB1,
+    MPB2
+}
+
+#[derive(RustcEncodable, RustcDecodable, PartialEq, Debug)]
+enum GameWinner{
     MPB1,
     MPB2,
     Neither

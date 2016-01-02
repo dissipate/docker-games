@@ -131,6 +131,8 @@ fn calculate_score(mpb1_wins: u64, mpb2_wins: u64, number_of_rounds: u64) -> u64
     let win_factor =  (((mpb1_wins_f - expected_mpb1_wins).powf(2.0)) / number_of_rounds_f) + 
                       (((mpb2_wins_f - expected_mpb2_wins).powf(2.0)) / number_of_rounds_f);
 
+    println!("mpb1_wins: {:?}, mpb2_wins: {:?}, number of rounds: {:?}", mpb1_wins, mpb2_wins, number_of_rounds);
+
     let score = (((win_factor / 3.84) * 100_000_000 as f64).trunc()) as u64;
 
     return score;
@@ -143,8 +145,8 @@ fn check_for_score_winner(mpb1_wins: u64, mpb2_wins: u64, number_of_rounds: u64)
 
     let mut winner = MatchingPenniesBot::Neither;
 
-    if (score >= 1_000_000) && (mpb1_wins > mpb2_wins)  { winner = MatchingPenniesBot::MPB1; }
-    else if (score >= 1_000_000) && (mpb2_wins > mpb1_wins) { winner = MatchingPenniesBot::MPB2; }
+    if (score >= 100_000_000) && (mpb1_wins > mpb2_wins)  { winner = MatchingPenniesBot::MPB1; }
+    else if (score >= 100_000_000) && (mpb2_wins > mpb1_wins) { winner = MatchingPenniesBot::MPB2; }
     
 
     return (winner, score);
@@ -159,7 +161,7 @@ fn announce_winner_exit(mpb: MatchingPenniesBot) -> (){
 
 fn get_game_statuses(round_number: u64, mpb1_pick: &PickInternal, mpb2_pick: &PickInternal, mpb1_wins: u64) -> (GameStatusInternal, GameStatusInternal, u64){
 
-    let mut mpb2_wins_current = round_number - mpb1_wins;
+    let mut mpb2_wins_current = (round_number - 1) - mpb1_wins;
     let mut mpb1_wins_current = mpb1_wins;
 
     let mpb1_pick_flip: PickVal;

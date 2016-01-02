@@ -7,12 +7,24 @@ extern crate rustc_serialize;
 use rustc_serialize::{Encodable, Decodable};
 use msgpack::{Encoder, Decoder};
 
-fn main() {
+#[derive(RustcEncodable, RustcDecodable, PartialEq, Debug, Clone, Copy)]
+struct GameStatus{
+    //Round
+    r: u64,
+    //Pick
+    p: char,
+    //Score
+    s: u64,
+    //Status
+    t: char 
+}
 
-    #[derive(RustcEncodable, RustcDecodable, PartialEq, Debug)]
-    struct Pick{
-        p: char 
-    }
+#[derive(RustcEncodable, RustcDecodable, PartialEq, Debug)]
+struct Pick{
+    p: char 
+}
+
+fn main() {    
 
     let mut ctx = zmq::Context::new();
 
@@ -26,7 +38,7 @@ fn main() {
 
     let pick = Pick { p: '0' };
 
-    let mut pick_buf = Vec::with_capacity(20);
+    let mut pick_buf = Vec::with_capacity(30);
     pick.encode(&mut Encoder::new(&mut &mut pick_buf)).unwrap();
 
     loop {
@@ -38,20 +50,9 @@ fn main() {
         println!("Received {:?}", byte_msg);
 
         let mut decoder = Decoder::new(&byte_msg[..]);
-        let res: Pick = Decodable::decode(&mut decoder).ok().unwrap();
-       
-        let their_pick = res.p;
-
-        let their_pick_val: u8 = match their_pick {
-          '0' => 0,
-          '1' => 1,
-          '^' => 2,
-          _ => 3 
-        };
+        let res: GameStatus = Decodable::decode(&mut decoder).ok().unwrap();
  
-        println!("Received msgpack {:?}", res);
-
-        println!("Their pick: {:?}", their_pick_val);
+        println!("Received GameStatus {:?}", res);
 
         responder.send(&pick_buf, 0).unwrap();
         

@@ -1,4 +1,6 @@
 # docker-games
+
+[![Join the chat at https://gitter.im/dissipate/docker-games](https://badges.gitter.im/dissipate/docker-games.svg)](https://gitter.im/dissipate/docker-games?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Game servers and clients for running bot tournaments for certain games inside Docker containers
 
 # Matching Pennies
